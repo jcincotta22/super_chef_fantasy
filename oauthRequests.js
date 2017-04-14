@@ -60,8 +60,9 @@ let getStandings = () => {
     return rp(getLeagueOptions).then((data) => {
       standings = JSON.parse(data)
       return standings
-    }).catch((err) => {
-      throw err.message
+    })
+    .catch((err) => {
+      console.log(err)
     });
   })
   .catch((err) => {
@@ -79,7 +80,6 @@ let getStandings = () => {
       };
       return rp(getLeagueOptions).then((data) => {
         standings = JSON.parse(data)
-        console.log(standings)
         return standings
       });
     })
