@@ -3,7 +3,7 @@ const keys = require('./keys.js')
 const app = express();
 const rp = require('request-promise')
 let response;
-
+let gameKey = 'mlb.l.17560'
 let url = "https://api.login.yahoo.com/oauth2/get_token"
 let options = {
     "method": 'POST',
@@ -40,11 +40,30 @@ let getToken = (options) => {
     throw err
   })
 }
-
+let newData;
 getToken(options).then((data) => {
   console.log("access token", response.access_token)
 }).catch((err) => {
   refreshToken(refresh).then((data) => {
     console.log("access token after refresh", response.access_token)
+    console.log(response)
+    // needs to be refactored into a seperate method...but works.
+    let getLeagueUri = `https://fantasysports.yahooapis.com/fantasy/v2/league/mlb.l.17560/standings?format=json`
+    let getLeagueOptions = {
+      "method": 'GET',
+      "uri": getLeagueUri,
+      "headers": {
+        'Authorization': `Bearer ${response.access_token}`,
+        'Content-Type': 'application/json'
+      }
+    };
+    rp(getLeagueOptions).then((data) => {
+      newData = JSON.parse(data)
+      console.log(newData)
+    }).catch((err) => {
+      console.log(err)
+    })
+
+
   })
 });
