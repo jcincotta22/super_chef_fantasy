@@ -1,0 +1,30 @@
+{
+  "name": "node-yahoo_oauth",
+  "description": "yahoo oauth",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "author": "Jeff Cincotta",
+  "directories": {
+    "lib": "."
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": ">= 0.4.7 < 0.5.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "passport-yahoo-oauth": "^0.1.2",
+    "passport-yahoo-oauth2": "^0.2.6",
+    "readline": "^1.3.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0",
+    "yahoo-fantasy": "^2.0.3"
+  }
+}
