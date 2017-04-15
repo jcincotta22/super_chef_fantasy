@@ -6,3 +6,8 @@
 
 /node_modules
 keys.js
+.idea/misc.xml
+.idea/modules.xml
+.idea/node_yahoo_oauth.iml
+.idea/vcs.xml
+.idea/workspace.xml

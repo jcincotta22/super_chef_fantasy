@@ -59,7 +59,7 @@ let getStandings = () => {
     };
     return rp(getLeagueOptions).then((data) => {
       standings = JSON.parse(data)
-      return standings
+      return standings.fantasy_content.league
     })
     .catch((err) => {
       console.log(err)
@@ -80,10 +80,10 @@ let getStandings = () => {
       };
       return rp(getLeagueOptions).then((data) => {
         standings = JSON.parse(data)
-        return standings
+        return standings.fantasy_content.league
       });
     })
   });
-}
+};
 
 module.exports = getStandings;
