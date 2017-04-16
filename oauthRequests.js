@@ -4,6 +4,7 @@ let response;
 let standings;
 let gameKey = 'mlb.l.17560'
 let url = "https://api.login.yahoo.com/oauth2/get_token"
+let getScoreBoard = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/scoreboard;week=1?format=json`
 
 let refreshToken = (base64token, refreshToken) => {
   let refresh = {
