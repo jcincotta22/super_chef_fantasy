@@ -6,9 +6,15 @@
 </head>
 <body>
 <h2>Week <%= week %></h2>
-<ol class="item_list">
-
-</ol>
+    <% let team %>
+    <% for(let key in stats) { %>
+<ul class="item_list">
+        <% stats[key].forEach((stat) => { %>
+            <% team = Object.keys(stat) %>
+            <li><%= team %>: <%= stat[team] %></li>
+        <% });%>
+</ul>
+    <% }; %>
 <a href="/">Refresh Standings</a>
 </body>
 </html>
