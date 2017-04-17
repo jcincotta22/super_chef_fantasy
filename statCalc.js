@@ -11,16 +11,34 @@ let cleanStats = (leagueStats) => {
     return allStats;
 };
 
+let sortStats = (statArray, statId) => {
+    let sortedStatList = statArray.sort((a, b) => {
+        let aKey = Object.keys(a);
+        let bKey = Object.keys(b);
+        if(isNaN(parseInt(a[aKey]))){
+            return parseFloat(b[bKey]) - parseFloat(a[aKey]);
+        }else if(statId === '60'){
+            a = parseFloat(parseInt(a[aKey].split('/')[0]) / parseInt(a[aKey].split('/')[1]));
+            b = parseFloat(parseInt(b[bKey].split('/')[0]) / parseInt(b[bKey].split('/')[1]));
+            return b - a;
+        }else{
+            return parseInt(b[bKey]) - parseInt(a[aKey]);
+        }
+
+    });
+    return sortedStatList
+};
+
 let statRank = (leagueStats) => {
     let allStats = cleanStats(leagueStats);
     let statList = [];
-    let sortedStatRanks = {};
+    let statRanks = {};
     let count = 0;
     for(let team in allStats){
-        if(count == 0){
+        if(count === 0){
             leagueStats[team].forEach((stats) => {
                 statList.push(stats.stat.stat_id);
-                sortedStatRanks[stats.stat.stat_id] = [];
+                statRanks[stats.stat.stat_id] = [];
             });
         }
         count++;
@@ -28,18 +46,13 @@ let statRank = (leagueStats) => {
             let statObj = {};
             statObj[team] = allStats[team][stat];
             let statClone = _.cloneDeep(statObj);
-            sortedStatRanks[stat].push(statClone);
+            statRanks[stat].push(statClone);
         })
     }
-
-    // for(let team in allStats) {
-    //     for(let stat in sortedStatRanks) {
-    //         sortedStatRanks[stat] = sortedStatRanks[stat].sort((a, b) => {
-    //             a[team] - b[team];
-    //         });
-    //     }
-    // }
-    return sortedStatRanks
+    for(statId in statRanks){
+        statRanks[statId] = sortStats(statRanks[statId], statId)
+    }
+    return statRanks
 };
 
 module.exports = statRank;
