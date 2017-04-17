@@ -87,4 +87,51 @@ let getStandings = () => {
   });
 };
 
-module.exports = getStandings;
+let getRotoStandings = (week) => {
+    let rotoData;
+    let getScoreBoard = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/scoreboard;week=${week}?format=json`
+    return Promise.resolve()
+        .then(() => {
+            return getToken(keys.base64token, keys.code).then((data) => {
+                console.log("access token", response.access_token)
+            })
+        })
+        .then(() => {
+            let getLeagueOptions = {
+                "method": 'GET',
+                "uri": getScoreBoard,
+                "headers": {
+                    'Authorization': `Bearer ${response.access_token}`
+                }
+            };
+            return rp(getLeagueOptions).then((data) => {
+                rotoData = JSON.parse(data)
+                return rotoData.fantasy_content.league
+            })
+                .catch((err) => {
+                    console.log(err)
+                });
+        })
+        .catch((err) => {
+            return Promise.resolve()
+                .then(() => {
+                    return refreshToken(keys.base64token, keys.refresh_token)
+                })
+                .then(() => {
+                    let getLeagueOptions = {
+                        "method": 'GET',
+                        "uri": getScoreBoard,
+                        "headers": {
+                            'Authorization': `Bearer ${response.access_token}`
+                        }
+                    };
+                    return rp(getLeagueOptions).then((data) => {
+                        rotoData = JSON.parse(data)
+                        return rotoData.fantasy_content.league[1].scoreboard
+                    });
+                })
+        });
+};
+
+module.exports.getStandings = getStandings;
+module.exports.getRotoStandings = getRotoStandings;
