@@ -8,6 +8,7 @@
 <h2>Week <%= week %></h2>
     <% let team %>
     <% for(let key in stats) { %>
+<h2><%= key %></h2>
 <ul class="item_list">
         <% stats[key].forEach((stat) => { %>
             <% team = Object.keys(stat) %>
