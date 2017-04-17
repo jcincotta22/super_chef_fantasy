@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const request = require('./oauthRequests.js');
+const statRank = require('./statCalc.js');
 
 app.listen(3000, () => {
     console.log('listening on 3000');
@@ -37,9 +38,10 @@ app.get('/roto', (req, res) => {
             stats[data[0].matchups[i].matchup[0].teams[0].team[0][2].name] = data[0].matchups[i].matchup[0].teams[0].team[1].team_stats.stats;
             stats[data[0].matchups[i].matchup[0].teams[1].team[0][2].name] = data[0].matchups[i].matchup[0].teams[1].team[1].team_stats.stats;
         }
+        let newStats = statRank(stats);
         res.render('roto.ejs', {
             week: week,
-            stats: stats
+            stats: newStats
         });
     }).catch((err) => {
         console.log(err)
