@@ -24,6 +24,8 @@ let sortStats = (statArray, statId) => {
             a = parseFloat(parseInt(a[aKey].split('/')[0]) / parseInt(a[aKey].split('/')[1]));
             b = parseFloat(parseInt(b[bKey].split('/')[0]) / parseInt(b[bKey].split('/')[1]));
             return b - a;
+        }else if(statId === '26' || statId === '27'){
+            return parseFloat(a[aKey]) - parseFloat(b[bKey]);
         }else{
             return parseInt(b[bKey]) - parseInt(a[aKey]);
         }
