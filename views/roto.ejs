@@ -12,10 +12,16 @@
 <ul class="item_list">
         <% stats[key].forEach((stat) => { %>
             <% team = Object.keys(stat) %>
-            <li><%= team %>: <%= stat[team] %></li>
+            <li><%= stat[team[1]] %>: <%= team[0] %>: <%= stat[team[0]] %></li>
         <% });%>
 </ul>
     <% }; %>
+
+<% sortedRanks.forEach((team) => { %>
+<ul class="item_list">
+    <li><%= team.key %> Average Rank: <%= team.value %> </li>
+</ul>
+<% }); %>
 <a href="/">Refresh Standings</a>
 </body>
 </html>

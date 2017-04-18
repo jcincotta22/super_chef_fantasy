@@ -1,9 +1,12 @@
 _ = require('lodash');
+let teamAveRanks = {};
+let teamObj = {};
 
 let cleanStats = (leagueStats) => {
     let allStats = {};
     for(let team in leagueStats){
         allStats[team] = {};
+        teamAveRanks[team] = [];
         leagueStats[team].forEach((teamStat) => {
             allStats[team][teamStat.stat.stat_id] = teamStat.stat.value;
         });
@@ -29,6 +32,36 @@ let sortStats = (statArray, statId) => {
     return sortedStatList
 };
 
+let getAveRanks = (sortedStats) => {
+    let duplicates = [];
+    let dupObj = {};
+    let team;
+    let index = 0;
+    sortedStats.forEach((stat) => {
+        team = Object.keys(stat);
+        if(dupObj[stat[team]])
+            duplicates.push(index);
+        else
+            dupObj[stat[team]] = team;
+        index++;
+    });
+    let rank = 1;
+    index = 0;
+    sortedStats.forEach((stat) => {
+        team = Object.keys(stat);
+        if(duplicates.indexOf(index) === -1){
+            stat['rank'] = rank;
+            teamAveRanks[team[0]].push(rank)
+        }else{
+            stat['rank'] = sortedStats[index - 1].rank;
+            teamAveRanks[team[0]].push(sortedStats[index - 1].rank);
+        }
+        index++;
+        rank++;
+    });
+    teamObj = createAveRankObj(teamAveRanks);
+};
+
 let statRank = (leagueStats) => {
     let allStats = cleanStats(leagueStats);
     let statList = [];
@@ -51,8 +84,41 @@ let statRank = (leagueStats) => {
     }
     for(statId in statRanks){
         statRanks[statId] = sortStats(statRanks[statId], statId)
+        getAveRanks(statRanks[statId])
     }
-    return statRanks
+    return [statRanks, teamObj]
 };
 
-module.exports = statRank;
+let teamAveRank = (aveRankArray) => {
+    let sum = aveRankArray.reduce((a, b) => { return a + b; });
+    let avg = parseFloat(sum / aveRankArray.length);
+    return avg;
+};
+
+let createAveRankObj = (teamAveRanks) => {
+    let teamAveRankObj = {};
+    for(let team in teamAveRanks){
+        teamAveRankObj[team] = teamAveRank(teamAveRanks[team])
+    }
+    return teamAveRankObj
+};
+
+let sortObject = (obj) => {
+    let arr = [];
+    let prop;
+    for (prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            arr.push({
+                'key': prop,
+                'value': parseFloat(obj[prop])
+            });
+        }
+    }
+    arr.sort(function(a, b) {
+        return a.value - b.value;
+    });
+    return arr; // returns array
+};
+
+module.exports.statRank = statRank;
+module.exports.sortObject = sortObject;
