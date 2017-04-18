@@ -25,7 +25,7 @@ let sortStats = (statArray, statId) => {
             a = parseFloat(parseInt(a[aKey].split('/')[0]) / parseInt(a[aKey].split('/')[1]));
             b = parseFloat(parseInt(b[bKey].split('/')[0]) / parseInt(b[bKey].split('/')[1]));
             return b - a;
-        }else if(statId === '26' || statId === '27'){
+        }else if(statId === '26' || statId === '27' || statId === '29'){
             return parseFloat(a[aKey]) - parseFloat(b[bKey]);
         }else{
             return parseInt(b[bKey]) - parseInt(a[aKey]);
@@ -62,7 +62,6 @@ let getAveRanks = (sortedStats) => {
         index++;
         rank++;
     });
-    teamObj = createAveRankObj(teamAveRanks);
 };
 
 let statRank = (leagueStats) => {
@@ -87,10 +86,11 @@ let statRank = (leagueStats) => {
             statRanks[stat].push(statClone);
         })
     }
-    for(statId in statRanks){
+    for(let statId in statRanks){
         statRanks[statId] = sortStats(statRanks[statId], statId)
         getAveRanks(statRanks[statId])
     }
+    teamObj = createAveRankObj(teamAveRanks);
     return [statRanks, teamObj]
 };
 

@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const request = require('./oauthRequests.js');
 const statCalc = require('./statCalc.js');
-let teamObj = statCalc.teamObj;
+const statIdObj = {
+    "3": "AVG", "4": "OBP", "5": "SLG", "7": "R", "12": "HR",
+    "13": "RBI", "16": "SB", "26": "ERA", "27": "WHIP",
+    "28": "W", "29": "L", "32": "S", "42": "K", "83": "QS"
+};
 
 app.listen(3000, () => {
     console.log('listening on 3000');
@@ -33,7 +37,7 @@ app.get('/roto', (req, res) => {
     let week;
     console.log("homepage");
 
-    request.getRotoStandings("1").then((data) => {
+    request.getRotoStandings(req.query.week).then((data) => {
         week = data.week;
         for(let i = 0; i < data[0].matchups.count; i++){
             stats[data[0].matchups[i].matchup[0].teams[0].team[0][2].name] = data[0].matchups[i].matchup[0].teams[0].team[1].team_stats.stats;
@@ -44,6 +48,7 @@ app.get('/roto', (req, res) => {
         res.render('roto.ejs', {
             week: week,
             stats: newStats[0],
+            statIdObj: statIdObj,
             sortedRanks: sortedRanks
         });
     }).catch((err) => {

@@ -7,8 +7,15 @@
 <body>
 <h2>Week <%= week %></h2>
     <% let team %>
+
+<% sortedRanks.forEach((team) => { %>
+<ul class="item_list">
+    <li><%= team.key %> Average Rank: <%= team.value %> </li>
+</ul>
+<% }); %>
+
     <% for(let key in stats) { %>
-<h2><%= key %></h2>
+<h2><%= statIdObj[key] %></h2>
 <ul class="item_list">
         <% stats[key].forEach((stat) => { %>
             <% team = Object.keys(stat) %>
@@ -17,11 +24,7 @@
 </ul>
     <% }; %>
 
-<% sortedRanks.forEach((team) => { %>
-<ul class="item_list">
-    <li><%= team.key %> Average Rank: <%= team.value %> </li>
-</ul>
-<% }); %>
-<a href="/">Refresh Standings</a>
+
+<a href="/">Standings</a>
 </body>
 </html>
