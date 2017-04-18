@@ -8,7 +8,8 @@ let cleanStats = (leagueStats) => {
         allStats[team] = {};
         teamAveRanks[team] = [];
         leagueStats[team].forEach((teamStat) => {
-            allStats[team][teamStat.stat.stat_id] = teamStat.stat.value;
+            if(teamStat.stat.stat_id !== '60' && teamStat.stat.stat_id !== '50')
+                allStats[team][teamStat.stat.stat_id] = teamStat.stat.value;
         });
     }
     return allStats;
@@ -72,8 +73,10 @@ let statRank = (leagueStats) => {
     for(let team in allStats){
         if(count === 0){
             leagueStats[team].forEach((stats) => {
-                statList.push(stats.stat.stat_id);
-                statRanks[stats.stat.stat_id] = [];
+                if(stats.stat.stat_id !== '60' && stats.stat.stat_id !== '50'){
+                    statList.push(stats.stat.stat_id);
+                    statRanks[stats.stat.stat_id] = [];
+                }
             });
         }
         count++;
