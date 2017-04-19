@@ -8,7 +8,7 @@ const statIdObj = {
     "28": "W", "29": "L", "32": "S", "42": "K", "83": "QS"
 };
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('listening on 3000');
 });
 
