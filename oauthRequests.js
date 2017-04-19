@@ -59,7 +59,6 @@ let getStandings = () => {
   return Promise.resolve()
   .then(() => {
     return getToken(keys.base64token, keys.code).then((data) => {
-      console.log("access token", response.access_token)
     })
   })
   .then(() => {
@@ -105,7 +104,7 @@ let getRotoStandings = (week) => {
     return Promise.resolve()
         .then(() => {
             return getToken(keys.base64token, keys.code).then((data) => {
-                console.log("access token", response.access_token)
+                console.log("recieved access token")
             })
         })
         .then(() => {
