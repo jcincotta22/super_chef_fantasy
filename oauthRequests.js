@@ -1,4 +1,16 @@
-const keys = require('./keys.js')
+let keys;
+
+if(process.env.client_id){
+    keys = {};
+    keys.client_id = process.env.client_id;
+    keys.secret = process.env.secret;
+    keys.code = process.env.code;
+    keys.refresh_token = process.env.refresh_token;
+    keys.base64token = process.env.base64token;
+}else{
+    keys = require('./keys.js')
+}
+
 const rp = require('request-promise')
 let response;
 let standings;
