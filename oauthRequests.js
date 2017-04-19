@@ -74,7 +74,7 @@ let getStandings = () => {
       return standings.fantasy_content.league
     })
     .catch((err) => {
-      console.log(err)
+      console.log("Error getting data")
     });
   })
   .catch((err) => {
@@ -120,7 +120,7 @@ let getRotoStandings = (week) => {
                 return rotoData.fantasy_content.league
             })
                 .catch((err) => {
-                    console.log(err)
+                    console.log("Error getting data")
                 });
         })
         .catch((err) => {
