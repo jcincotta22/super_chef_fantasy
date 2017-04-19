@@ -8,15 +8,15 @@
 <h2>Week <%= week %></h2>
     <% let team %>
 
+<ol class="item_list">
 <% sortedRanks.forEach((team) => { %>
-<ul class="item_list">
-    <li><%= team.key %> Average Rank: <%= team.value %> </li>
-</ul>
+    <li><%= team.key %> Average Rank: <%= team.value %> </li><br>
 <% }); %>
+</ol>
 
     <% for(let key in stats) { %>
 <h2><%= statIdObj[key] %></h2>
-<ul class="item_list">
+<ul class="item_list" style="list-style: none;">
         <% stats[key].forEach((stat) => { %>
             <% team = Object.keys(stat) %>
             <li><%= stat[team[1]] %>: <%= team[0] %>: <%= stat[team[0]] %></li>
