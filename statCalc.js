@@ -8,9 +8,24 @@ let cleanStats = (leagueStats) => {
         allStats[team] = {};
         teamAveRanks[team] = [];
         leagueStats[team].forEach((teamStat) => {
+            if(teamStat.stat.stat_id === '50'){
+                if(parseFloat(teamStat.stat.value) < 14)
+                    allStats[team].minInnings = false;
+                else
+                    allStats[team].minInnings = true;
+            }
             if(teamStat.stat.stat_id !== '60' && teamStat.stat.stat_id !== '50')
                 allStats[team][teamStat.stat.stat_id] = teamStat.stat.value;
         });
+    }
+    for(let team in allStats){
+        if(!allStats[team].minInnings){
+            allStats[team]["26"] = 99.99;
+            allStats[team]["27"] = 99.99;
+            allStats[team]["28"] = -1;
+            allStats[team]["29"] = 99.99;
+            allStats[team]["83"] = -1;
+        }
     }
     return allStats;
 };
@@ -97,6 +112,7 @@ let statRank = (leagueStats) => {
 let teamAveRank = (aveRankArray) => {
     let sum = aveRankArray.reduce((a, b) => { return a + b; });
     let avg = parseFloat(sum / aveRankArray.length);
+    //round to 3 decimal places
     return avg;
 };
 
