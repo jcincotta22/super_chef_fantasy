@@ -36,6 +36,7 @@ app.get('/roto', (req, res) => {
     let stats = {};
     let week;
     console.log("homepage");
+    console.log('before roto');
 
     request.getRotoStandings(req.query.week).then((data) => {
         week = data.week;
