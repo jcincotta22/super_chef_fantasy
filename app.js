@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
             teams: teams
         });
     }).catch((err) => {
-        console.log(err)
+        console.log(err.message)
     });
 
 });
@@ -52,7 +52,7 @@ app.get('/roto', (req, res) => {
             sortedRanks: sortedRanks
         });
     }).catch((err) => {
-        console.log(err)
+        console.log(err.message)
     });
 
 });
