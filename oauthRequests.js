@@ -29,8 +29,8 @@ let refreshToken = (base64token, refreshToken) => {
         'body': `grant_type=refresh_token&redirect_uri=oob&refresh_token=${refreshToken}`
     };
   return rp(refresh).then((data) => {
-    response = JSON.parse(data)
-    console.log('saved new access token after refresh')
+      response = JSON.parse(data)
+      console.log('saved new access token after refresh')
   }).catch((err) => {
     throw err
   })
@@ -136,9 +136,22 @@ let getRotoStandings = (week) => {
                             'Authorization': `Bearer ${response.access_token}`
                         }
                     };
+                    //failing here
                     return rp(getLeagueOptions).then((data) => {
                         rotoData = JSON.parse(data)
                         return rotoData.fantasy_content.league[1].scoreboard
+                    }).catch((err) => {
+                        console.log(err)
+                        setTimeout(() => {
+                            console.log(err);
+                        },6000);
+                        return rp(getLeagueOptions).then((data) => {
+                            rotoData = JSON.parse(data)
+                            return rotoData.fantasy_content.league[1].scoreboard
+                        }).catch((err) => {
+                            console.log(err)
+                            throw err
+                        });
                     });
                 })
         });
