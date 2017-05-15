@@ -9,7 +9,7 @@ let cleanStats = (leagueStats) => {
         teamAveRanks[team] = [];
         leagueStats[team].forEach((teamStat) => {
             if(teamStat.stat.stat_id === '50'){
-                if(parseFloat(teamStat.stat.value) < 14)
+                if(parseFloat(teamStat.stat.value) < 14 || teamsStat.stat.value === "" || teamStat.stat.value === undefined)
                     allStats[team].minInnings = false;
                 else
                     allStats[team].minInnings = true;
