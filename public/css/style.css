@@ -31,10 +31,6 @@
     bottom: 30em;
     right: 45em;;
   }
-
-  body{
-    background-color: red;
-  }
 }
 
 @keyframes spin {
