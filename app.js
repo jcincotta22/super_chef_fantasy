@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const app = express();
 const request = require('./oauthRequests.js');
 const statCalc = require('./statCalc.js');
@@ -7,6 +8,7 @@ const statIdObj = {
     "13": "RBI", "16": "SB", "26": "ERA", "27": "WHIP",
     "28": "W", "29": "L", "32": "S", "42": "K", "83": "QS"
 };
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('listening on 3000');
