@@ -40,14 +40,28 @@
       <option value="/roto?week=22">Week 22</option>
   </select>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </body>
 
 <script>
   let changeLocation = (value) => {
-    let newNode = document.createElement('div');
-    newNode.className = "loader"
-    document.getElementsByTagName('body')[0].appendChild(newNode);
+    // let newNode = document.createElement('div');
+    // newNode.className = "loader"
+    // document.getElementsByTagName('body')[0].appendChild(newNode);
+    // debugger;
+    $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+    $(window).on('load', function(){
+      setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
+    });
     location = value;
+    function removeLoader(){
+      $( "#loadingDiv" ).fadeOut(500, function() {
+        // fadeOut complete. Remove the loading div
+        $( "#loadingDiv" ).remove(); //makes page more lightweight
+      });
+    }
   }
+
 </script>
+
 </html>
