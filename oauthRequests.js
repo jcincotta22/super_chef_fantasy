@@ -14,12 +14,11 @@ if(process.env.client_id){
 const rp = require('request-promise')
 let response;
 let standings;
-let gameKey = 'mlb.l.17560'
-let url = "https://api.login.yahoo.com/oauth2/get_token"
-let getScoreBoard = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/scoreboard;week=1?format=json`
+const gameKey = 'mlb.l.47680'
+const url = "https://api.login.yahoo.com/oauth2/get_token"
 
-let refreshToken = (base64token, refreshToken) => {
-  let refresh = {
+const refreshToken = (base64token, refreshToken) => {
+  const refresh = {
         "method": 'POST',
         "uri": url,
         "headers": {
@@ -36,8 +35,8 @@ let refreshToken = (base64token, refreshToken) => {
   })
 }
 
-let getToken = (base64token, code) => {
-  let options = {
+const getToken = (base64token, code) => {
+  const options = {
       "method": 'POST',
       "uri": url,
       "headers": {
@@ -54,15 +53,15 @@ let getToken = (base64token, code) => {
   })
 }
 
-let getStandings = () => {
-  let getLeagueUri = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/standings?format=json`
+const getStandings = () => {
+  const getLeagueUri = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/standings?format=json`
   return Promise.resolve()
-  .then(() => {
-    return getToken(keys.base64token, keys.code).then((data) => {
+    .then(() => {
+      return getToken(keys.base64token, keys.code).then((data) => {
     })
   })
   .then(() => {
-    let getLeagueOptions = {
+    const getLeagueOptions = {
       "method": 'GET',
       "uri": getLeagueUri,
       "headers": {
@@ -83,7 +82,7 @@ let getStandings = () => {
       return refreshToken(keys.base64token, keys.refresh_token)
     })
     .then(() => {
-      let getLeagueOptions = {
+      const getLeagueOptions = {
         "method": 'GET',
         "uri": getLeagueUri,
         "headers": {
@@ -98,9 +97,8 @@ let getStandings = () => {
   });
 };
 
-let getRotoStandings = (week) => {
-    let rotoData;
-    let getScoreBoard = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/scoreboard;week=${week}?format=json`
+const getRotoStandings = (week) => {
+    const getScoreBoard = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameKey}/scoreboard;week=${week}?format=json`
     return Promise.resolve()
         .then(() => {
             return getToken(keys.base64token, keys.code).then((data) => {
@@ -108,53 +106,40 @@ let getRotoStandings = (week) => {
             })
         })
         .then(() => {
-            let getLeagueOptions = {
+          let getLeagueOptions = {
+            "method": 'GET',
+            "uri": getScoreBoard,
+            "headers": {
+              'Authorization': `Bearer ${response.access_token}`
+            }
+          };
+          return rp(getLeagueOptions)
+        })
+        .then((data) => {
+          return JSON.parse(data).fantasy_content.league
+        })
+        .catch((err) => {
+          return Promise.resolve()
+            .then(() => {
+                return refreshToken(keys.base64token, keys.refresh_token)
+            })
+            .then(() => {
+              let getLeagueOptions = {
                 "method": 'GET',
                 "uri": getScoreBoard,
                 "headers": {
-                    'Authorization': `Bearer ${response.access_token}`
+                  'Authorization': `Bearer ${response.access_token}`
                 }
-            };
-            return rp(getLeagueOptions).then((data) => {
-                rotoData = JSON.parse(data)
-                return rotoData.fantasy_content.league
+              };
+              return rp(getLeagueOptions)
             })
-                .catch((err) => {
-                    console.log("Error getting data")
-                });
-        })
-        .catch((err) => {
-            return Promise.resolve()
-                .then(() => {
-                    return refreshToken(keys.base64token, keys.refresh_token)
-                })
-                .then(() => {
-                    let getLeagueOptions = {
-                        "method": 'GET',
-                        "uri": getScoreBoard,
-                        "headers": {
-                            'Authorization': `Bearer ${response.access_token}`
-                        }
-                    };
-                    //failing here
-                    return rp(getLeagueOptions).then((data) => {
-                        rotoData = JSON.parse(data)
-                        return rotoData.fantasy_content.league[1].scoreboard
-                    }).catch((err) => {
-                        console.log(err)
-                        setTimeout(() => {
-                            console.log(err);
-                        },6000);
-                        return rp(getLeagueOptions).then((data) => {
-                            rotoData = JSON.parse(data)
-                            return rotoData.fantasy_content.league[1].scoreboard
-                        }).catch((err) => {
-                            console.log(err)
-                            throw err
-                        });
-                    });
-                })
-        });
+            .then((data) => {
+                return JSON.parse(data).fantasy_content.league[1].scoreboard
+            })
+            .catch((err) => {
+                console.log(err)
+                throw err
+            });
 };
 
 module.exports.getStandings = getStandings;

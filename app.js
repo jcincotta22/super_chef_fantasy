@@ -15,12 +15,11 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 app.get('/', (req, res) => {
-    let teams = [];
-    let leagueName;
+    const teams = [];
     console.log("homepage");
 
     request.getStandings().then((data) => {
-        leagueName = data[0].name;
+        const leagueName = data[0].name;
         for(let i = 0; i < data[1].standings[0].teams.count; i++){
             teams.push(data[1].standings[0].teams[i].team[0][2].name)
         }
@@ -35,24 +34,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/roto', (req, res) => {
-    let stats = {};
-    let week;
+    const stats = {};
     console.log("homepage");
     console.log('before roto');
 
     request.getRotoStandings(req.query.week).then((data) => {
-        week = data.week;
+        const week = data.week;
         for(let i = 0; i < data[0].matchups.count; i++){
             stats[data[0].matchups[i].matchup[0].teams[0].team[0][2].name] = data[0].matchups[i].matchup[0].teams[0].team[1].team_stats.stats;
             stats[data[0].matchups[i].matchup[0].teams[1].team[0][2].name] = data[0].matchups[i].matchup[0].teams[1].team[1].team_stats.stats;
         }
-        let newStats = statCalc.statRank(stats);
-        let sortedRanks = statCalc.sortObject(newStats[1]);
+        const newStats = statCalc.statRank(stats);
+        const sortedRanks = statCalc.sortObject(newStats[1]);
         res.render('roto.ejs', {
-            week: week,
+            week,
             stats: newStats[0],
-            statIdObj: statIdObj,
-            sortedRanks: sortedRanks
+            statIdObj,
+            sortedRanks
         });
     }).catch((err) => {
         console.log(err.message)
