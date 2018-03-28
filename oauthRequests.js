@@ -120,26 +120,27 @@ const getRotoStandings = (week) => {
         })
         .catch((err) => {
           return Promise.resolve()
-            .then(() => {
-                return refreshToken(keys.base64token, keys.refresh_token)
-            })
-            .then(() => {
-              let getLeagueOptions = {
-                "method": 'GET',
-                "uri": getScoreBoard,
-                "headers": {
-                  'Authorization': `Bearer ${response.access_token}`
-                }
-              };
-              return rp(getLeagueOptions)
-            })
-            .then((data) => {
-                return JSON.parse(data).fantasy_content.league[1].scoreboard
-            })
-            .catch((err) => {
-                console.log(err)
-                throw err
-            });
+          .then(() => {
+            return refreshToken(keys.base64token, keys.refresh_token)
+          })
+          .then(() => {
+            let getLeagueOptions = {
+              "method": 'GET',
+              "uri": getScoreBoard,
+              "headers": {
+                'Authorization': `Bearer ${response.access_token}`
+              }
+            };
+            return rp(getLeagueOptions)
+          })
+          .then((data) => {
+            return JSON.parse(data).fantasy_content.league[1].scoreboard
+          })
+          .catch((err) => {
+            console.log(err)
+            throw err
+          });
+        });
 };
 
 module.exports.getStandings = getStandings;
