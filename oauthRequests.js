@@ -12,7 +12,7 @@ if(process.env.client_id){
 }
 
 const rp = require('request-promise')
-const gameKey = 'mlb.l.52590'
+const gameKey = 'mlb.l.35055'
 const url = "https://api.login.yahoo.com/oauth2/get_token"
 
 const buildRequestOptions = (method, uri, headers, body = null) => {
