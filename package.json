@@ -20,7 +20,7 @@
     "body-parser": "^1.16.0",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "passport-yahoo-oauth": "^0.1.2",
     "passport-yahoo-oauth2": "^0.2.6",
     "path": "^0.12.7",
